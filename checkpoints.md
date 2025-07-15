@@ -15,6 +15,12 @@ This file records major milestones and meaningful commits for the Lead Intellige
 
 ---
 
+## 2024-12-19 (Continued)
+- **Fixed relative import issue in scraper modules**
+- **Created proper runner scripts (run_scrapers.py, test_scraper.py)**
+- **Updated RUN_INSTRUCTIONS.md with correct usage patterns**
+- **Added comprehensive troubleshooting section**
+
 ## To Do
 - Implement initial API endpoints for leads, auth, and companies
 - Add database models and migrations

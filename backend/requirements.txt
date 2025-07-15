@@ -1,0 +1,8 @@
+flask>=2.2
+flask-cors
+requests
+pytest
+python-dotenv
+# For scraping, if you use Selenium or BeautifulSoup, uncomment as needed:
+selenium
+beautifulsoup4
