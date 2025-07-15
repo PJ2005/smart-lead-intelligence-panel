@@ -29,8 +29,8 @@ This file records major milestones and meaningful commits for the Lead Intellige
 - **Updated module-level README, developer.md, design.md, and checkpoints.md**
 
 ## 2025-07-15
-- **Implemented AI-powered company summarization (SummarizerService) using GPT-4**
-- **Integrated summarization into enrichment pipeline; output now includes a summary field**
+- **Implemented customizable LeadScoringEngine with rule-based logic and future ML/LLM extensibility**
+- **Integrated scoring into enrichment pipeline; output now includes a score field**
 - **Updated documentation, design, and developer logs**
 
 ## To Do

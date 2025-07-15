@@ -1,24 +1,26 @@
 import logging
 from typing import Dict, Any
 from .summarizer import SummarizerService
+from .scoring import LeadScoringEngine
 import os
 
 """
-EnrichmentService: Enriches company data using Apollo API and generates a GPT-4 summary via SummarizerService.
+EnrichmentService: Enriches company data using Apollo API and generates a GPT-4 summary via SummarizerService. Adds a lead score via LeadScoringEngine.
 """
 class EnrichmentService:
     """
     Enriches company data using Apollo API only and generates a GPT-4 summary.
-    Adds funding, tech stack, employee count, and more.
+    Adds funding, tech stack, employee count, and more. Calculates a lead score.
     """
-    def __init__(self, apollo_enrichment_api_key: str = None, openai_api_key: str = None):
+    def __init__(self, apollo_enrichment_api_key: str = None, openai_api_key: str = None, scoring_config: Dict[str, Any] = None):
         self.logger = logging.getLogger(self.__class__.__name__)
         self.apollo_enrichment_api_key = apollo_enrichment_api_key
         self.summarizer = SummarizerService(openai_api_key=openai_api_key or os.environ.get("OPENAI_API_KEY"))
+        self.scorer = LeadScoringEngine(config=scoring_config)
 
     def enrich(self, company: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Enrich the company dict with additional data from Apollo API and add a GPT-4 summary.
+        Enrich the company dict with additional data from Apollo API, add a GPT-4 summary, and calculate a lead score.
         Returns a new dict with enrichment fields added.
         """
         enriched = company.copy()
@@ -39,6 +41,9 @@ class EnrichmentService:
                 self.logger.error("Summarization failed. No summary added.")
         else:
             self.logger.warning("No description found to summarize.")
+        # Score the lead
+        score = self.scorer.score(enriched)
+        enriched["score"] = score
         return enriched
 
     def _enrich_with_apollo(self, company: Dict[str, Any]) -> Dict[str, Any]:

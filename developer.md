@@ -391,3 +391,24 @@ Any important implementation details or considerations.
 **Rationale:**
 - Improves user experience by surfacing key company information at a glance.
 - Modular, testable, and extensible for future enhancements. 
+
+### 2025-07-15 - Customizable Lead Scoring Engine
+
+#### Decision: Add LeadScoringEngine with rule-based and future ML/LLM support
+**Context:** Need to score leads for prioritization and analytics.
+
+**Decision:**
+- Implemented `LeadScoringEngine` with configurable rule-based logic.
+- Stub method for future ML/LLM-based scoring.
+- Integrated into enrichment pipeline; output now includes a `score` field.
+- Updated module-level README.md with usage and configuration.
+
+**Rationale:**
+- Modular, testable, and extensible for future enhancements.
+- Enables both business rules and AI-driven scoring. 
+
+### 2025-07-15 - Bug Fix: OpenAI Error Handling in SummarizerService
+
+- Fixed exception handling to use correct import (`from openai import error as openai_error`).
+- Updated all OpenAI API error handling to use `openai_error.RateLimitError` and `openai_error.OpenAIError`.
+- This ensures the enrichment and scoring pipeline continues even if summarization fails, and the score field is always present in the output. 

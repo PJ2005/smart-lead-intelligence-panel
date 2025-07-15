@@ -129,3 +129,22 @@ This document describes the architecture and design decisions for the Lead Intel
 - Additional summarization providers or fallback logic can be added as needed.
 
 --- 
+
+## Lead Scoring Engine (2025-07-15)
+
+### Overview
+- Calculates a 0-100 score for each company using rule-based logic.
+- Scoring criteria are configurable (weights for funding, employee count, tech stack, etc.).
+- Stub method for future ML/LLM-based scoring.
+
+### Integration Point
+- Scoring is called in the enrichment pipeline after enrichment and summarization.
+- The score is added as a `score` field in the output.
+
+### Value
+- Enables lead prioritization, analytics, and downstream automation.
+- Modular and extensible for future enhancements (e.g., ML/LLM models).
+
+### Extensibility
+- Scoring logic and weights can be customized via config.
+- ML/LLM scoring can be plugged in via the `score_with_ml` method. 

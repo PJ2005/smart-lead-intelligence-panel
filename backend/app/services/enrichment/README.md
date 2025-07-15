@@ -126,3 +126,47 @@ print(summary)
 
 ## Changelog
 - 2025-07-15: Added AI-powered company summarization using GPT-4 (SummarizerService) and integrated it into the enrichment pipeline. 
+
+## LeadScoringEngine Usage
+
+The `LeadScoringEngine` calculates a 0-100 score for each company using rule-based logic (and future ML/LLM support).
+
+### Example
+```python
+from enrichment.scoring import LeadScoringEngine
+scorer = LeadScoringEngine()
+score = scorer.score(company_dict)
+print(score)
+```
+
+### Configuration
+You can customize scoring weights by passing a config dict:
+```python
+config = {"funding_weight": 0.3, "employee_count_weight": 0.1, ...}
+scorer = LeadScoringEngine(config=config)
+```
+
+### Integration
+The enrichment pipeline automatically adds a `score` field to each company dict.
+
+### Example Output
+```
+{
+  'company_name': 'OpenAI',
+  'description': 'OpenAI is a leading company in AI research and deployment.',
+  'summary': 'OpenAI is a leading company in AI research and deployment, focused on advancing artificial intelligence in a safe and beneficial manner.',
+  'funding': '$11B',
+  'tech_stack': ['Python', 'TensorFlow', 'Kubernetes'],
+  'employee_count': 375,
+  'domain': 'openai.com',
+  'score': 80
+}
+``` 
+
+## Extending Lead Scoring
+- The `score_with_ml` method is a stub for future ML/LLM-based scoring.
+- Replace with a real model or API as needed. 
+
+## Bug Fix: OpenAI Error Handling (2025-07-15)
+- Fixed exception handling in SummarizerService to use correct OpenAI error imports.
+- Ensures the enrichment and scoring pipeline continues and the score field is always present, even if summarization fails. 

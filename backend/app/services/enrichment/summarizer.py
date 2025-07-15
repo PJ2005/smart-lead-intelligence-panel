@@ -5,6 +5,7 @@ import logging
 import openai
 import os
 from typing import Optional
+from openai import error as openai_error
 
 class SummarizerService:
     """
@@ -30,10 +31,10 @@ class SummarizerService:
             )
             summary = response.choices[0].message["content"].strip()
             return summary
-        except openai.error.RateLimitError as e:
+        except openai_error.RateLimitError as e:
             self.logger.error(f"OpenAI rate limit error: {e}")
             return None
-        except openai.error.OpenAIError as e:
+        except openai_error.OpenAIError as e:
             self.logger.error(f"OpenAI API error: {e}")
             return None
         except Exception as e:
