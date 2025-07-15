@@ -1,5 +1,49 @@
 {
-  "Crunchbase": {},
+  "Crunchbase": {
+    "OpenAI": {
+      "company_name": "OpenAI",
+      "description": "OpenAI is a leading company in AI.",
+      "founders": [
+        "Sam Altman",
+        "Greg Brockman"
+      ],
+      "website": "https://openai.com",
+      "location": "San Francisco, CA",
+      "founded_year": 2015,
+      "score": 0
+    },
+    "Anthropic": {
+      "company_name": "Anthropic",
+      "description": "Anthropic is a leading company in AI.",
+      "founders": [
+        "Sam Altman",
+        "Greg Brockman"
+      ],
+      "website": "https://anthropic.com",
+      "location": "San Francisco, CA",
+      "founded_year": 2015,
+      "funding": "$1.5B",
+      "tech_stack": [
+        "Go",
+        "PyTorch"
+      ],
+      "employee_count": 150,
+      "domain": "anthropic.com",
+      "score": 13
+    },
+    "Stability AI": {
+      "company_name": "Stability AI",
+      "description": "Stability AI is a leading company in AI.",
+      "founders": [
+        "Sam Altman",
+        "Greg Brockman"
+      ],
+      "website": "https://stability ai.com",
+      "location": "San Francisco, CA",
+      "founded_year": 2015,
+      "score": 0
+    }
+  },
   "AngelList": {
     "OpenAI": {
       "company_name": "OpenAI",

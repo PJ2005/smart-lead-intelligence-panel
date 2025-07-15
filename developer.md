@@ -412,3 +412,8 @@ Any important implementation details or considerations.
 - Fixed exception handling to use correct import (`from openai import error as openai_error`).
 - Updated all OpenAI API error handling to use `openai_error.RateLimitError` and `openai_error.OpenAIError`.
 - This ensures the enrichment and scoring pipeline continues even if summarization fails, and the score field is always present in the output. 
+
+### 2025-07-15 - Fix: OpenAI Error Handling for SDK >=1.0.0
+- Removed import of openai.error; now use openai.RateLimitError and openai.OpenAIError directly in SummarizerService.
+- Ensures compatibility with OpenAI Python SDK >=1.0.0.
+- Pipeline now robust to OpenAI API errors regardless of SDK version. 

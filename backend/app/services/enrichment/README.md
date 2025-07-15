@@ -167,6 +167,6 @@ The enrichment pipeline automatically adds a `score` field to each company dict.
 - The `score_with_ml` method is a stub for future ML/LLM-based scoring.
 - Replace with a real model or API as needed. 
 
-## Bug Fix: OpenAI Error Handling (2025-07-15)
-- Fixed exception handling in SummarizerService to use correct OpenAI error imports.
-- Ensures the enrichment and scoring pipeline continues and the score field is always present, even if summarization fails. 
+## Bug Fix: OpenAI Error Handling (2025-07-15, updated)
+- Now uses openai.RateLimitError and openai.OpenAIError directly for SDK >=1.0.0.
+- Ensures compatibility with latest OpenAI Python SDK and robust error handling in the pipeline. 
