@@ -348,3 +348,46 @@ Any important implementation details or considerations.
 
 **Last Updated**: 2024-12-19
 **Version**: 1.0.0 
+
+### 2024-12-20 - Company Data Enrichment Module
+
+#### Decision: Add Company Data Enrichment Service
+**Context**: Need to enrich scraped company data with funding, tech stack, employee count, etc., using third-party APIs (Clearbit, Apollo, etc.).
+
+**Decision**: Implement `EnrichmentService` as an OOP, modular, and independently testable class in `services/enrichment/enrichment.py`.
+
+**Rationale**:
+- Centralizes enrichment logic for all scrapers
+- Allows fallback between multiple APIs (Clearbit, Apollo)
+- Easy to extend with new providers
+- Can be tested independently with mock data
+
+**Implementation Notes**:
+- Service takes normalized company dict and returns enriched dict
+- Tries Clearbit first; if missing data, falls back to Apollo
+- Logs all enrichment attempts, successes, and failures
+- Integrated into all scrapers after normalization, before caching/storage
+- Stubbed API calls for now; ready for real API integration
+- Documented usage and API details in module-level README
+- Updated design.md and checkpoints.md with workflow and milestone
+
+**Errors & Fixes**:
+- None encountered during initial implementation (stubbed APIs)
+- If enrichment fails, original data is returned and error is logged 
+
+### 2025-07-15 - AI-Powered Company Summarization
+
+#### Decision: Add SummarizerService using GPT-4
+**Context:** Need to generate concise, business-focused company summaries for dashboards and lead cards.
+
+**Decision:**
+- Implemented `SummarizerService` using OpenAI GPT-4 API.
+- Handles API errors and rate limits gracefully.
+- Integrated into `EnrichmentService` pipeline after enrichment.
+- Output includes a `summary` field if a description is present and summarization succeeds.
+- Updated module-level README.md with usage, troubleshooting, and configuration.
+- Documented value, limitations, and future improvements.
+
+**Rationale:**
+- Improves user experience by surfacing key company information at a glance.
+- Modular, testable, and extensible for future enhancements. 

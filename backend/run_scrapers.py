@@ -9,6 +9,7 @@ import os
 import logging
 import redis
 from pathlib import Path
+import pprint
 
 # Add the app directory to Python path
 sys.path.insert(0, str(Path(__file__).parent / "app"))
@@ -60,6 +61,9 @@ def main():
                     logger.info(f"✅ Success: {data.get('company_name', company)}")
                     logger.info(f"   Location: {data.get('location', 'N/A')}")
                     logger.info(f"   Website: {data.get('website', 'N/A')}")
+                    pprint.pprint(data)
+                    if 'description' not in data or not data['description']:
+                        logger.warning(f"No description found for {data.get('company_name', company)}. Summarization will be skipped.")
                 else:
                     logger.warning(f"⚠️  No data returned for {company}")
             except Exception as e:

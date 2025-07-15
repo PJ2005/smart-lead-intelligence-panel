@@ -1,14 +1,24 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()
 from .base import BaseScraper
 import json
 from typing import Any, Dict, Optional
 import redis
 import logging
 import requests
+from app.services.enrichment.enrichment import EnrichmentService
 
 class KasprScraper(BaseScraper):
     """
-    Scraper for LinkedIn data via Kaspr API with Redis caching.
+    Scraper for LinkedIn data via Kaspr API with Redis caching and enrichment.
     """
+    def __init__(self, redis_client: redis.Redis, cache_ttl: int = 3600):
+        super().__init__(redis_client, cache_ttl)
+        self.enrichment_service = EnrichmentService(
+            apollo_enrichment_api_key=os.environ.get('APOLLO_ENRICHMENT_API_KEY')
+        )
+
     def fetch_company(self, company_name: str) -> Optional[Dict[str, Any]]:
         cache_key = f"kaspr:company:{company_name.lower()}"
         try:
@@ -23,9 +33,11 @@ class KasprScraper(BaseScraper):
                 return None
             parsed = self.parse_company(raw)
             normalized = self.normalize_company(parsed)
-            self.redis.setex(cache_key, self.cache_ttl, json.dumps(normalized))
-            self._store_in_db(normalized)
-            return normalized
+            # Enrich the normalized data
+            enriched = self.enrichment_service.enrich(normalized)
+            self.redis.setex(cache_key, self.cache_ttl, json.dumps(enriched))
+            self._store_in_db(enriched)
+            return enriched
         except Exception as e:
             self.logger.error(f"Error fetching company {company_name}: {e}")
             return None
