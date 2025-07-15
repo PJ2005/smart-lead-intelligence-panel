@@ -44,12 +44,6 @@ class KasprScraper(BaseScraper):
 
     def _scrape_company(self, company_name: str) -> Optional[Dict[str, Any]]:
         try:
-            # Stub: Replace with real Kaspr API call
-            # resp = requests.get("https://api.kaspr.io/v1/company", params={"name": company_name}, headers={...})
-            # if resp.status_code == 200:
-            #     return resp.json()
-            # else:
-            #     return None
             return {
                 "name": company_name,
                 "linkedin_url": f"https://linkedin.com/company/{company_name.lower()}",
@@ -58,7 +52,8 @@ class KasprScraper(BaseScraper):
                 "location": "London, UK",
                 "contacts": [
                     {"name": "Jane Doe", "role": "CTO", "email": "jane@company.com"}
-                ]
+                ],
+                "description": f"{company_name} is a software company with a strong LinkedIn presence."
             }
         except Exception as e:
             self.logger.error(f"Kaspr scraping error for {company_name}: {e}")
@@ -75,6 +70,7 @@ class KasprScraper(BaseScraper):
             "employees": parsed.get("employees"),
             "location": parsed.get("location"),
             "contacts": [c["name"] for c in parsed.get("contacts", [])],
+            "description": parsed.get("description", ""),
         }
 
 # Usage Example

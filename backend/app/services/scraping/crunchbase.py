@@ -66,7 +66,7 @@ class CrunchbaseScraper(BaseScraper):
     def normalize_company(self, parsed: Dict[str, Any]) -> Dict[str, Any]:
         return {
             "company_name": parsed.get("name"),
-            "description": parsed.get("description"),
+            "description": parsed.get("description", ""),
             "founders": [f["name"] for f in parsed.get("founders", [])],
             "website": parsed.get("website"),
             "location": parsed.get("location"),

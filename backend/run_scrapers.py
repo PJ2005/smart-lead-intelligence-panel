@@ -10,6 +10,7 @@ import logging
 import redis
 from pathlib import Path
 import pprint
+import json
 
 # Add the app directory to Python path
 sys.path.insert(0, str(Path(__file__).parent / "app"))
@@ -49,34 +50,40 @@ def main():
         ("Google Maps", GoogleMapsScraper(r))
     ]
     
-    for scraper_name, scraper in scrapers:
-        logger.info(f"\n🔍 Testing {scraper_name} Scraper:")
-        logger.info("=" * 50)
-        
-        for company in test_companies:
-            logger.info(f"\n📊 Fetching data for: {company}")
+    # Prepare output file
+    output_path = "enriched_output.json"
+    with open(output_path, "w") as outfile:
+        all_results = {}
+        for scraper_name, scraper in scrapers:
+            logger.info(f"\n🔍 Testing {scraper_name} Scraper:")
+            logger.info("=" * 50)
+            all_results[scraper_name] = {}
+            for company in test_companies:
+                logger.info(f"\n📊 Fetching data for: {company}")
+                try:
+                    data = scraper.fetch_company(company)
+                    if data:
+                        logger.info(f"✅ Success: {data.get('company_name', company)}")
+                        logger.info(f"   Location: {data.get('location', 'N/A')}")
+                        logger.info(f"   Website: {data.get('website', 'N/A')}")
+                        all_results[scraper_name][company] = data
+                        if 'description' not in data or not data['description']:
+                            logger.warning(f"No description found for {data.get('company_name', company)}. Summarization will be skipped.")
+                    else:
+                        logger.warning(f"⚠️  No data returned for {company}")
+                except Exception as e:
+                    logger.error(f"❌ Error fetching {company}: {e}")
+            # Test cache hit
+            logger.info(f"\n🔄 Testing cache for {scraper_name}:")
             try:
-                data = scraper.fetch_company(company)
+                data = scraper.fetch_company("OpenAI")  # Should hit cache
                 if data:
-                    logger.info(f"✅ Success: {data.get('company_name', company)}")
-                    logger.info(f"   Location: {data.get('location', 'N/A')}")
-                    logger.info(f"   Website: {data.get('website', 'N/A')}")
-                    pprint.pprint(data)
-                    if 'description' not in data or not data['description']:
-                        logger.warning(f"No description found for {data.get('company_name', company)}. Summarization will be skipped.")
-                else:
-                    logger.warning(f"⚠️  No data returned for {company}")
+                    logger.info("✅ Cache hit successful")
             except Exception as e:
-                logger.error(f"❌ Error fetching {company}: {e}")
-        
-        # Test cache hit
-        logger.info(f"\n🔄 Testing cache for {scraper_name}:")
-        try:
-            data = scraper.fetch_company("OpenAI")  # Should hit cache
-            if data:
-                logger.info("✅ Cache hit successful")
-        except Exception as e:
-            logger.error(f"❌ Cache test failed: {e}")
+                logger.error(f"❌ Cache test failed: {e}")
+        # Write all results to file (overwrite each run)
+        json.dump(all_results, outfile, indent=2)
+    logger.info(f"\nFull enriched output written to {output_path}")
 
 if __name__ == "__main__":
     main() 

@@ -1,0 +1,132 @@
+{
+  "Crunchbase": {},
+  "AngelList": {
+    "OpenAI": {
+      "company_name": "OpenAI",
+      "angellist_url": "https://angel.co/company/openai",
+      "industry": "Fintech",
+      "stage": "Seed",
+      "location": "New York, NY",
+      "founders": [
+        "Alex Founder"
+      ],
+      "description": ""
+    },
+    "Anthropic": {
+      "company_name": "Anthropic",
+      "angellist_url": "https://angel.co/company/anthropic",
+      "industry": "Fintech",
+      "stage": "Seed",
+      "location": "New York, NY",
+      "founders": [
+        "Alex Founder"
+      ],
+      "description": "",
+      "funding": "$1.5B",
+      "tech_stack": [
+        "Go",
+        "PyTorch"
+      ],
+      "employee_count": 150,
+      "domain": "anthropic.com"
+    },
+    "Stability AI": {
+      "company_name": "Stability AI",
+      "angellist_url": "https://angel.co/company/stability ai",
+      "industry": "Fintech",
+      "stage": "Seed",
+      "location": "New York, NY",
+      "founders": [
+        "Alex Founder"
+      ],
+      "description": ""
+    }
+  },
+  "Kaspr": {
+    "OpenAI": {
+      "company_name": "OpenAI",
+      "linkedin_url": "https://linkedin.com/company/openai",
+      "industry": "Software",
+      "employees": 120,
+      "location": "London, UK",
+      "contacts": [
+        "Jane Doe"
+      ],
+      "description": ""
+    },
+    "Anthropic": {
+      "company_name": "Anthropic",
+      "linkedin_url": "https://linkedin.com/company/anthropic",
+      "industry": "Software",
+      "employees": 120,
+      "location": "London, UK",
+      "contacts": [
+        "Jane Doe"
+      ],
+      "description": "",
+      "funding": "$1.5B",
+      "tech_stack": [
+        "Go",
+        "PyTorch"
+      ],
+      "employee_count": 150,
+      "domain": "anthropic.com"
+    },
+    "Stability AI": {
+      "company_name": "Stability AI",
+      "linkedin_url": "https://linkedin.com/company/stability ai",
+      "industry": "Software",
+      "employees": 120,
+      "location": "London, UK",
+      "contacts": [
+        "Jane Doe"
+      ],
+      "description": ""
+    }
+  },
+  "Google Maps": {
+    "OpenAI": {
+      "company_name": "OpenAI",
+      "address": "1600 Amphitheatre Parkway, Mountain View, CA",
+      "website": "https://openai.com",
+      "phone": "+1 650-253-0000",
+      "location": {
+        "lat": 37.422,
+        "lng": -122.084
+      },
+      "googlemaps_url": "https://maps.google.com/?q=OpenAI",
+      "description": ""
+    },
+    "Anthropic": {
+      "company_name": "Anthropic",
+      "address": "1600 Amphitheatre Parkway, Mountain View, CA",
+      "website": "https://anthropic.com",
+      "phone": "+1 650-253-0000",
+      "location": {
+        "lat": 37.422,
+        "lng": -122.084
+      },
+      "googlemaps_url": "https://maps.google.com/?q=Anthropic",
+      "description": "",
+      "funding": "$1.5B",
+      "tech_stack": [
+        "Go",
+        "PyTorch"
+      ],
+      "employee_count": 150,
+      "domain": "anthropic.com"
+    },
+    "Stability AI": {
+      "company_name": "Stability AI",
+      "address": "1600 Amphitheatre Parkway, Mountain View, CA",
+      "website": "https://stability ai.com",
+      "phone": "+1 650-253-0000",
+      "location": {
+        "lat": 37.422,
+        "lng": -122.084
+      },
+      "googlemaps_url": "https://maps.google.com/?q=Stability AI",
+      "description": ""
+    }
+  }
+}

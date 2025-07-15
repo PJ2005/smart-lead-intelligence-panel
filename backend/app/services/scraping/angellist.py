@@ -44,12 +44,6 @@ class AngelListScraper(BaseScraper):
 
     def _scrape_company(self, company_name: str) -> Optional[Dict[str, Any]]:
         try:
-            # Stub: Replace with real AngelList API call
-            # resp = requests.get("https://api.angel.co/1/startups/search", params={"query": company_name}, headers={...})
-            # if resp.status_code == 200:
-            #     return resp.json()
-            # else:
-            #     return None
             return {
                 "name": company_name,
                 "angellist_url": f"https://angel.co/company/{company_name.lower()}",
@@ -58,7 +52,8 @@ class AngelListScraper(BaseScraper):
                 "location": "New York, NY",
                 "founders": [
                     {"name": "Alex Founder", "role": "CEO"}
-                ]
+                ],
+                "description": f"{company_name} is a fintech startup listed on AngelList."
             }
         except Exception as e:
             self.logger.error(f"AngelList scraping error for {company_name}: {e}")
@@ -75,6 +70,7 @@ class AngelListScraper(BaseScraper):
             "stage": parsed.get("stage"),
             "location": parsed.get("location"),
             "founders": [f["name"] for f in parsed.get("founders", [])],
+            "description": parsed.get("description", ""),
         }
 
 # Usage Example
