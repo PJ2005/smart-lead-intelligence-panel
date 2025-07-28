@@ -21,6 +21,8 @@ The `EnrichmentService` enriches normalized company data with additional informa
 
 Now also includes **AI-powered company summarization** using GPT-4 via the `SummarizerService`.
 
+Now also includes **AI-powered signal detection** using GPT-4 via the `SignalDetector`.
+
 - **Primary API:** Apollo (stubbed)
 - **Summarization:** GPT-4 (OpenAI)
 - **OOP, modular, and independently testable**
@@ -52,7 +54,12 @@ print(enriched)
   'funding': '$11B',
   'tech_stack': ['Python', 'TensorFlow', 'Kubernetes'],
   'employee_count': 375,
-  'domain': 'openai.com'
+  'domain': 'openai.com',
+  'signals': [
+    {"type": "funding", "value": "$11B", "confidence": "High"},
+    {"type": "leadership_change", "value": "New CTO: Jane Doe", "confidence": "Medium"},
+    {"type": "tech_adoption", "value": "Adopted Snowflake", "confidence": "Medium"}
+  ]
 }
 ```
 
@@ -126,6 +133,7 @@ print(summary)
 
 ## Changelog
 - 2025-07-15: Added AI-powered company summarization using GPT-4 (SummarizerService) and integrated it into the enrichment pipeline. 
+- 2025-07-16: Added AI-powered signal detection using GPT-4 (SignalDetector) and integrated it into the enrichment pipeline. 
 
 ## LeadScoringEngine Usage
 
@@ -170,3 +178,42 @@ The enrichment pipeline automatically adds a `score` field to each company dict.
 ## Bug Fix: OpenAI Error Handling (2025-07-15, updated)
 - Now uses openai.RateLimitError and openai.OpenAIError directly for SDK >=1.0.0.
 - Ensures compatibility with latest OpenAI Python SDK and robust error handling in the pipeline. 
+
+## SignalDetector Usage
+
+The `SignalDetector` can be used independently to extract sales signals from any unstructured text (e.g., company news, description):
+
+```python
+from enrichment.signal_detector import SignalDetector
+signal_detector = SignalDetector(openai_api_key="...")
+signals = signal_detector.detect_signals("Acme Corp raised $50M Series B and hired a new CTO.")
+print(signals)
+```
+
+### Example Output
+```
+[
+  {"type": "funding", "value": "$50M Series B", "confidence": "High"},
+  {"type": "leadership_change", "value": "New CTO: Jane Doe", "confidence": "Medium"}
+]
+```
+
+## Troubleshooting Signal Detection
+- If the `signals` field is missing, check that the company data includes a `description` and that your OpenAI API key is set.
+- If you see errors about rate limits or API failures, check your OpenAI usage and logs for details.
+- If no signals are detected, the field will be an empty list or omitted.
+
+## Signal Detection Integration
+- After summarization, the pipeline detects sales signals from the company description using GPT-4.
+- The detected signals are added as a `signals` field in the output dict.
+- This enables downstream analytics, dashboards, and lead scoring to leverage critical sales events.
+
+## Value of Signal Detection
+- Surfaces actionable sales intelligence (funding, leadership changes, tech adoption, etc.) for B2B teams.
+- Enables automated workflows, alerts, and prioritization based on real-time company events.
+- Modular and extensible for future enhancements (e.g., custom signal types, multi-language support).
+
+## Limitations and Future Improvements
+- Signal detection depends on the quality and recency of the input text.
+- OpenAI API usage may incur costs and is subject to rate limits.
+- Future: Add caching for signals, support for more granular confidence scores, and more robust error handling. 

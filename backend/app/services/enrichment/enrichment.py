@@ -3,6 +3,7 @@ from typing import Dict, Any
 from .summarizer import SummarizerService
 from .scoring import LeadScoringEngine
 import os
+from .signal_detector import SignalDetector
 
 """
 EnrichmentService: Enriches company data using Apollo API and generates a GPT-4 summary via SummarizerService. Adds a lead score via LeadScoringEngine.
@@ -16,6 +17,7 @@ class EnrichmentService:
         self.logger = logging.getLogger(self.__class__.__name__)
         self.apollo_enrichment_api_key = apollo_enrichment_api_key
         self.summarizer = SummarizerService(openai_api_key=openai_api_key or os.environ.get("OPENAI_API_KEY"))
+        self.signal_detector = SignalDetector(openai_api_key=openai_api_key or os.environ.get("OPENAI_API_KEY"))
         self.scorer = LeadScoringEngine(config=scoring_config)
 
     def enrich(self, company: Dict[str, Any]) -> Dict[str, Any]:
@@ -39,8 +41,15 @@ class EnrichmentService:
                 enriched["summary"] = summary
             else:
                 self.logger.error("Summarization failed. No summary added.")
+            # Signal detection (after summarization)
+            signals = self.signal_detector.detect_signals(description)
+            if signals:
+                enriched["signals"] = signals
+                self.logger.info(f"Added {len(signals)} detected signals.")
+            else:
+                self.logger.info("No signals detected.")
         else:
-            self.logger.warning("No description found to summarize.")
+            self.logger.warning("No description found to summarize or detect signals.")
         # Score the lead
         score = self.scorer.score(enriched)
         enriched["score"] = score
